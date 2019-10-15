@@ -2,6 +2,7 @@
 
 # substitute environment variables
 echo Substituting environment variables
+export DOLLAR='$'
 envsubst < /etc/nginx/conf.d/reverse_proxy.conf.template > /etc/nginx/conf.d/reverse_proxy.conf
 rm /etc/nginx/conf.d/reverse_proxy.conf.template
 
