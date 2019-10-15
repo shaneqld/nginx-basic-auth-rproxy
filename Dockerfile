@@ -12,8 +12,10 @@ RUN rm /etc/nginx/conf.d/default.conf
 # Copy in config as template
 COPY reverse_proxy.conf /etc/nginx/conf.d/reverse_proxy.conf.template
 
+# Copy startup script
+WORKDIR /app
+COPY start.sh .
+RUN chmod +x start.sh
+
 # Entrypoint: substitute environment variables in template config, generate htpasswd file and run nginx
-CMD /bin/bash -c "envsubst < /etc/nginx/conf.d/reverse_proxy.conf.template > /etc/nginx/conf.d/reverse_proxy.conf && \
-    rm /etc/nginx/conf.d/reverse_proxy.conf.template && \
-    htpasswd -cb /etc/nginx/conf.d/.htpasswd ${BASIC_USERNAME} ${BASIC_PASSWORD} && \
-    exec nginx -g 'daemon off;'"
+ENTRYPOINT [ "/app/start.sh" ]
